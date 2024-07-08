@@ -7,36 +7,67 @@ import 'package:quiz_app/pages/quizscreen/ui/resultpage.dart';
 import 'package:quiz_app/utils/font_style.dart';
 import 'package:slide_countdown/slide_countdown.dart';
 
-class QuizscreenPage extends StatelessWidget {
-  const QuizscreenPage({super.key});
-  static int length = questions.length - 1;
+class QuizscreenPage extends StatefulWidget {
+  final List<Map<String, dynamic>> questions;
+  final int length;
+  const QuizscreenPage(
+      {super.key, required this.questions, required this.length});
+
   static int i = 0;
   @override
-  Widget build(BuildContext context) {
-    String? selectedOption;
-    List<String?> submitted = List.generate(length + 1, (_) => null);
-    int result = 0;
+  State<QuizscreenPage> createState() => _QuizscreenPageState();
+}
 
+class _QuizscreenPageState extends State<QuizscreenPage> {
+  @override
+  void dispose() {
+    super.dispose();
+    QuizscreenPage.i = 0;
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    List<String> answers = widget.questions
+        .map((map) => map['ans'].toString().substring(8, 9))
+        .toList();
+    for (int i = 0; i < answers.length; i++) {}
+    String selectedOption = "F";
+    List<String> submitted = List.generate(widget.length + 1, (_) => "F");
+    int result = 0;
+    Widget image = widget.questions[QuizscreenPage.i]["img"] == ""
+        ? const Text(" ")
+        : Image(
+            image: NetworkImage(widget.questions[QuizscreenPage.i]["img"]),
+            fit: BoxFit.contain,
+          );
     Widget option1 = Container(
       padding: const EdgeInsets.all(8),
       color: Colors.grey,
-      child: getText(s: "${questions[i]["o1"]}", size: size.height * 0.008),
+      child: getText(
+          s: "${widget.questions[QuizscreenPage.i]["A"]}",
+          size: size.height * 0.008),
     );
 
     Widget option2 = Container(
       padding: const EdgeInsets.all(8),
       color: Colors.grey,
-      child: getText(s: "${questions[i]["o2"]}", size: size.height * 0.008),
+      child: getText(
+          s: "${widget.questions[QuizscreenPage.i]["B"]}",
+          size: size.height * 0.008),
     );
     Widget option3 = Container(
       padding: const EdgeInsets.all(8),
       color: Colors.grey,
-      child: getText(s: "${questions[i]["o3"]}", size: size.height * 0.008),
+      child: getText(
+          s: "${widget.questions[QuizscreenPage.i]["C"]}",
+          size: size.height * 0.008),
     );
     Widget option4 = Container(
       padding: const EdgeInsets.all(8),
       color: Colors.grey,
-      child: getText(s: "${questions[i]["o4"]}", size: size.height * 0.008),
+      child: getText(
+          s: "${widget.questions[QuizscreenPage.i]["D"]}",
+          size: size.height * 0.008),
     );
     return BlocProvider(
       create: (context) => QuizBloc(),
@@ -44,6 +75,7 @@ class QuizscreenPage extends StatelessWidget {
         listenWhen: (previous, current) => true,
         listener: (context, state) {
           if (state is QuizSubmittedState) {
+            QuizscreenPage.i = 0;
             Navigator.of(context).pushReplacement(CupertinoPageRoute(
                 builder: (context) => ResultPage(
                       result: result,
@@ -51,69 +83,87 @@ class QuizscreenPage extends StatelessWidget {
                     )));
           }
           if (state is NextQuizState) {
-            if (i < length) {
+            if (QuizscreenPage.i < widget.length) {
               if (selectedOption == "") {
                 ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
                     content: Text("Answer this question to move further")));
                 return;
               }
-              submitted.insert(i, "${questions[i][selectedOption]}");
+              submitted.insert(QuizscreenPage.i, selectedOption);
               selectedOption = "";
 
-              i++;
+              QuizscreenPage.i++;
+              image = widget.questions[QuizscreenPage.i]["img"] == ""
+                  ? const Text(" ")
+                  : Image(
+                      image: NetworkImage(
+                          widget.questions[QuizscreenPage.i]["img"]));
               option1 = Container(
                 padding: const EdgeInsets.all(8),
                 color: Colors.grey,
                 child: getText(
-                    s: "${questions[i]["o1"]}", size: size.height * 0.008),
+                    s: "${widget.questions[QuizscreenPage.i]["A"]}",
+                    size: size.height * 0.008),
               );
 
               option2 = Container(
                 padding: const EdgeInsets.all(8),
                 color: Colors.grey,
                 child: getText(
-                    s: "${questions[i]["o2"]}", size: size.height * 0.008),
+                    s: "${widget.questions[QuizscreenPage.i]["B"]}",
+                    size: size.height * 0.008),
               );
               option3 = Container(
                 padding: const EdgeInsets.all(8),
                 color: Colors.grey,
                 child: getText(
-                    s: "${questions[i]["o3"]}", size: size.height * 0.008),
+                    s: "${widget.questions[QuizscreenPage.i]["C"]}",
+                    size: size.height * 0.008),
               );
               option4 = Container(
                 padding: const EdgeInsets.all(8),
                 color: Colors.grey,
                 child: getText(
-                    s: "${questions[i]["o4"]}", size: size.height * 0.008),
+                    s: "${widget.questions[QuizscreenPage.i]["D"]}",
+                    size: size.height * 0.008),
               );
             }
           }
 
           if (state is S1QuizState) {
+            image = widget.questions[QuizscreenPage.i]["img"] == ""
+                ? const Text(" ")
+                : Image(
+                    image: NetworkImage(
+                        widget.questions[QuizscreenPage.i]["img"]));
             option1 = Container(
               padding: const EdgeInsets.all(8),
-              color: selectedOption == "o1" ? Colors.blue : Colors.grey,
+              color: selectedOption == "A" ? Colors.blue : Colors.grey,
               child: getText(
-                  s: "${questions[i]["o1"]}", size: size.height * 0.008),
+                  s: "${widget.questions[QuizscreenPage.i]["A"]}",
+                  size: size.height * 0.008),
             );
 
             option2 = Container(
               padding: const EdgeInsets.all(8),
-              color: selectedOption == "o2" ? Colors.blue : Colors.grey,
+              color: selectedOption == "B" ? Colors.blue : Colors.grey,
               child: getText(
-                  s: "${questions[i]["o2"]}", size: size.height * 0.008),
+                  s: "${widget.questions[QuizscreenPage.i]["B"]}",
+                  size: size.height * 0.008),
             );
             option3 = Container(
               padding: const EdgeInsets.all(8),
-              color: selectedOption == "o3" ? Colors.blue : Colors.grey,
+              color: selectedOption == "C" ? Colors.blue : Colors.grey,
               child: getText(
-                  s: "${questions[i]["o3"]}", size: size.height * 0.008),
+                  s: "${widget.questions[QuizscreenPage.i]["C"]}",
+                  size: size.height * 0.008),
             );
             option4 = Container(
               padding: const EdgeInsets.all(8),
-              color: selectedOption == "o4" ? Colors.blue : Colors.grey,
+              color: selectedOption == "D" ? Colors.blue : Colors.grey,
               child: getText(
-                  s: "${questions[i]["o4"]}", size: size.height * 0.008),
+                  s: "${widget.questions[QuizscreenPage.i]["D"]}",
+                  size: size.height * 0.008),
             );
           }
         },
@@ -124,17 +174,17 @@ class QuizscreenPage extends StatelessWidget {
                 automaticallyImplyLeading: false,
                 title: Row(children: [
                   SlideCountdownSeparated(
-                      duration: const Duration(minutes: 2),
+                      duration: const Duration(minutes: 30),
                       separatorType: SeparatorType.title,
                       slideDirection: SlideDirection.up,
                       onDone: () {
-                        result = getMarks(submitted);
+                        result = getMarks(submitted, answers);
 
                         context.read<QuizBloc>().add(QuizSubmittedEvent());
                       }),
                   InkWell(
                       onTap: () {
-                        result = getMarks(submitted);
+                        result = getMarks(submitted, answers);
 
                         context.read<QuizBloc>().add(QuizSubmittedEvent());
                       },
@@ -153,7 +203,8 @@ class QuizscreenPage extends StatelessWidget {
                       size: size.height * 0.016,
                     ),
                     getText(
-                        s: "${i + 1}/${length + 1}", size: size.height * 0.012),
+                        s: "${QuizscreenPage.i + 1}/${widget.length + 1}",
+                        size: size.height * 0.012),
                     InkWell(
                         onTap: () {
                           context.read<QuizBloc>().add(NextQuizEvent());
@@ -173,11 +224,16 @@ class QuizscreenPage extends StatelessWidget {
                       padding: const EdgeInsets.all(8),
                       color: Colors.grey,
                       child: getText(
-                          s: "${questions[i]["q"]}", size: size.height * 0.008),
+                          s: "${widget.questions[QuizscreenPage.i]["Q"]}",
+                          size: size.height * 0.008),
                     ),
                     SizedBox(
                       height: size.height * 0.01,
                     ),
+                    SizedBox(
+                        width: double.infinity,
+                        height: size.height * 0.05,
+                        child: image),
                     SizedBox(
                       height: size.height * 0.01,
                       child: const Text(
@@ -192,7 +248,7 @@ class QuizscreenPage extends StatelessWidget {
                         children: [
                           InkWell(
                               onTap: () {
-                                selectedOption = "o1";
+                                selectedOption = "A";
                                 context.read<QuizBloc>().add(S1QuizEvent());
                               },
                               child: option1),
@@ -201,7 +257,7 @@ class QuizscreenPage extends StatelessWidget {
                           ),
                           InkWell(
                               onTap: () {
-                                selectedOption = "o2";
+                                selectedOption = "B";
                                 context.read<QuizBloc>().add(S1QuizEvent());
                               },
                               child: option2),
@@ -210,7 +266,7 @@ class QuizscreenPage extends StatelessWidget {
                           ),
                           InkWell(
                               onTap: () {
-                                selectedOption = "o3";
+                                selectedOption = "C";
                                 context.read<QuizBloc>().add(S1QuizEvent());
                               },
                               child: option3),
@@ -219,7 +275,7 @@ class QuizscreenPage extends StatelessWidget {
                           ),
                           InkWell(
                               onTap: () {
-                                selectedOption = "o4";
+                                selectedOption = "D";
                                 context.read<QuizBloc>().add(S1QuizEvent());
                               },
                               child: option4),

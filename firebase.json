@@ -1,1 +1,26 @@
-{"flutter":{"platforms":{"android":{"default":{"projectId":"quiz-app-16fe4","appId":"1:362620713050:android:9cb1db2a543549c9384063","fileOutput":"android/app/google-services.json"}},"dart":{"lib/firebase_options.dart":{"projectId":"quiz-app-16fe4","configurations":{"android":"1:362620713050:android:9cb1db2a543549c9384063","web":"1:362620713050:web:eedbf2a1e891db20384063"}}}}}}
+{ 
+    "hosting": {
+        "public": "build/web"
+       },
+    "flutter": {
+        "platforms": {
+            "android": {
+                "default": {
+                    "projectId": "quiz-app-dff15",
+                    "appId": "1:981857157729:android:faaac3c6e81c04dc78a020",
+                    "fileOutput": "android/app/google-services.json"
+                }
+            },
+            "dart": {
+                "lib/firebase_options.dart": {
+                    "projectId": "quiz-app-dff15",
+                    "configurations": {
+                        "android": "1:981857157729:android:faaac3c6e81c04dc78a020",
+                        "ios": "1:981857157729:ios:33447799199c2a2478a020",
+                        "web": "1:981857157729:web:86dbdeac40a3eb2878a020"
+                    }
+                }
+            }
+        }
+    }
+}

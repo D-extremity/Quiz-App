@@ -1,92 +1,41 @@
 {
   "project_info": {
-    "project_number": "362620713050",
-    "project_id": "quiz-app-16fe4",
-    "storage_bucket": "quiz-app-16fe4.appspot.com"
+    "project_number": "981857157729",
+    "project_id": "quiz-app-dff15",
+    "storage_bucket": "quiz-app-dff15.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:362620713050:android:9cb1db2a543549c9384063",
+        "mobilesdk_app_id": "1:981857157729:android:faaac3c6e81c04dc78a020",
         "android_client_info": {
           "package_name": "com.example.quiz_app"
         }
       },
       "oauth_client": [
         {
-          "client_id": "362620713050-t91uo3acarkmged7hpdvmabn7qpbk09n.apps.googleusercontent.com",
+          "client_id": "981857157729-0at3o75j4rv8lt3bls1j92tac8sfnpsk.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyDmreEDRrIIkUA_TPNYdkNR5YvUfUDG0lY"
+          "current_key": "AIzaSyByEGOUAm28uVublyNPp7Q2ssDBoNvBmTY"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "362620713050-t91uo3acarkmged7hpdvmabn7qpbk09n.apps.googleusercontent.com",
+              "client_id": "981857157729-0at3o75j4rv8lt3bls1j92tac8sfnpsk.apps.googleusercontent.com",
               "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:362620713050:android:2f615ef4469d6cfd384063",
-        "android_client_info": {
-          "package_name": "com.satyam.app"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "362620713050-t91uo3acarkmged7hpdvmabn7qpbk09n.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDmreEDRrIIkUA_TPNYdkNR5YvUfUDG0lY"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
+            },
             {
-              "client_id": "362620713050-t91uo3acarkmged7hpdvmabn7qpbk09n.apps.googleusercontent.com",
-              "client_type": 3
-            }
-          ]
-        }
-      }
-    },
-    {
-      "client_info": {
-        "mobilesdk_app_id": "1:362620713050:android:6b781f3ea32a2a3c384063",
-        "android_client_info": {
-          "package_name": "com.satyam.quiz_app"
-        }
-      },
-      "oauth_client": [
-        {
-          "client_id": "362620713050-t91uo3acarkmged7hpdvmabn7qpbk09n.apps.googleusercontent.com",
-          "client_type": 3
-        }
-      ],
-      "api_key": [
-        {
-          "current_key": "AIzaSyDmreEDRrIIkUA_TPNYdkNR5YvUfUDG0lY"
-        }
-      ],
-      "services": {
-        "appinvite_service": {
-          "other_platform_oauth_client": [
-            {
-              "client_id": "362620713050-t91uo3acarkmged7hpdvmabn7qpbk09n.apps.googleusercontent.com",
-              "client_type": 3
+              "client_id": "981857157729-lj4ackm788k891l6tvo02pkc9ik51caf.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.example.quizApp"
+              }
             }
           ]
         }

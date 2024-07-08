@@ -23,10 +23,7 @@ class DefaultFirebaseOptions {
       case TargetPlatform.android:
         return android;
       case TargetPlatform.iOS:
-        throw UnsupportedError(
-          'DefaultFirebaseOptions have not been configured for ios - '
-          'you can reconfigure this by running the FlutterFire CLI again.',
-        );
+        return ios;
       case TargetPlatform.macOS:
         throw UnsupportedError(
           'DefaultFirebaseOptions have not been configured for macos - '
@@ -50,20 +47,30 @@ class DefaultFirebaseOptions {
   }
 
   static const FirebaseOptions web = FirebaseOptions(
-    apiKey: 'AIzaSyAcd_rFJOZvvwrLsoeX5EgXrGwG4G8RcLY',
-    appId: '1:362620713050:web:eedbf2a1e891db20384063',
-    messagingSenderId: '362620713050',
-    projectId: 'quiz-app-16fe4',
-    authDomain: 'quiz-app-16fe4.firebaseapp.com',
-    storageBucket: 'quiz-app-16fe4.appspot.com',
+    apiKey: 'AIzaSyCFlqrgqJYLe_1bG0QMgAohh1uPkz18nf4',
+    appId: '1:981857157729:web:86dbdeac40a3eb2878a020',
+    messagingSenderId: '981857157729',
+    projectId: 'quiz-app-dff15',
+    authDomain: 'quiz-app-dff15.firebaseapp.com',
+    storageBucket: 'quiz-app-dff15.appspot.com',
   );
 
   static const FirebaseOptions android = FirebaseOptions(
-    apiKey: 'AIzaSyDmreEDRrIIkUA_TPNYdkNR5YvUfUDG0lY',
-    appId: '1:362620713050:android:9cb1db2a543549c9384063',
-    messagingSenderId: '362620713050',
-    projectId: 'quiz-app-16fe4',
-    storageBucket: 'quiz-app-16fe4.appspot.com',
+    apiKey: 'AIzaSyByEGOUAm28uVublyNPp7Q2ssDBoNvBmTY',
+    appId: '1:981857157729:android:faaac3c6e81c04dc78a020',
+    messagingSenderId: '981857157729',
+    projectId: 'quiz-app-dff15',
+    storageBucket: 'quiz-app-dff15.appspot.com',
+  );
+
+  static const FirebaseOptions ios = FirebaseOptions(
+    apiKey: 'AIzaSyC-AL9pRE64b-3rNhR8u-Tj5zqignIHJg0',
+    appId: '1:981857157729:ios:33447799199c2a2478a020',
+    messagingSenderId: '981857157729',
+    projectId: 'quiz-app-dff15',
+    storageBucket: 'quiz-app-dff15.appspot.com',
+    iosClientId: '981857157729-lj4ackm788k891l6tvo02pkc9ik51caf.apps.googleusercontent.com',
+    iosBundleId: 'com.example.quizApp',
   );
 
 }

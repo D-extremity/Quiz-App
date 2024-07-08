@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quiz_app/bloc/bloc/auth_bloc_bloc.dart';
@@ -8,6 +9,7 @@ import 'package:quiz_app/pages/login_page.dart';
 import 'package:quiz_app/pages/quizscreen/bloc/quiz_bloc.dart';
 import 'package:quiz_app/pages/signup.dart';
 import 'package:quiz_app/utils/globals.dart';
+import 'package:quiz_app/website/home_web.dart';
 
 import 'firebase_options.dart';
 
@@ -17,6 +19,7 @@ void main() async {
   await Firebase.initializeApp(
     options: DefaultFirebaseOptions.android,
   );
+
   runApp(const MyApp());
 }
 
@@ -27,6 +30,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      theme: ThemeData(useMaterial3: true),
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
       home: MultiBlocProvider(
@@ -34,34 +38,36 @@ class MyApp extends StatelessWidget {
           BlocProvider<AuthBlocBloc>(
             create: (_) => AuthBlocBloc(),
           ),
-            BlocProvider<QuizBloc>(
+          BlocProvider<QuizBloc>(
             create: (_) => QuizBloc(),
           ),
-          
         ],
-        child: StreamBuilder<User?>(
-            stream: FirebaseAuth.instance.authStateChanges(),
-            builder: (context, snapshot) {
-              if (snapshot.hasData) {
-                return const HomePage();
-              }
-              if (snapshot.hasError) {
-                return const LoginPage();
-              }
-              if (snapshot.connectionState == ConnectionState.waiting) {
-                return const Scaffold(
-                  body: Center(
-                    child: Column(
-                      children: [
-                        CircularProgressIndicator(),
-                        Text("Internet Seems to be slow")
-                      ],
-                    ),
-                  ),
-                );
-              }
-              return const Signup();
-            }),
+        child: (kIsWeb)
+            ? const WebsiteHomePage()
+            : StreamBuilder<User?>(
+                stream: FirebaseAuth.instance.authStateChanges(),
+                builder: (context, snapshot) {
+                  if (snapshot.hasData) {
+                    return const HomePage();
+                  }
+                  if (snapshot.hasError) {
+                    return const LoginPage();
+                  }
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Scaffold(
+                      body: Center(
+                        child: Column(
+                          children: [
+                            CircularProgressIndicator(),
+                            Text("Internet Seems to be slow")
+                          ],
+                        ),
+                      ),
+                    );
+                  }
+                  return const Signup();
+                  // return WebsiteHomePage();
+                }),
       ),
     );
   }
