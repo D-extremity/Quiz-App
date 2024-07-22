@@ -69,6 +69,7 @@ class DefaultFirebaseOptions {
     messagingSenderId: '981857157729',
     projectId: 'quiz-app-dff15',
     storageBucket: 'quiz-app-dff15.appspot.com',
+    androidClientId: '981857157729-1l0neakmp41sndtckk1lm539i8ovth6m.apps.googleusercontent.com',
     iosClientId: '981857157729-lj4ackm788k891l6tvo02pkc9ik51caf.apps.googleusercontent.com',
     iosBundleId: 'com.example.quizApp',
   );

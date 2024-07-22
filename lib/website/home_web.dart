@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quiz_app/utils/font_style.dart';
 import 'package:quiz_app/website/questions_preview.dart';
+import 'package:quiz_app/website/solutionuploadpage.dart';
 
 class WebsiteHomePage extends StatelessWidget {
   const WebsiteHomePage({super.key});
@@ -14,8 +15,8 @@ class WebsiteHomePage extends StatelessWidget {
         child: Scaffold(
       appBar: AppBar(
         title: getText(
-            s: "Quiz App Portal",
-            size: MediaQuery.of(context).size.width * 0.02),
+            s: "Rahein Education Portal",
+            size: MediaQuery.of(context).size.width * 0.01),
         centerTitle: true,
       ),
       body: Center(
@@ -59,13 +60,13 @@ class WebsiteHomePage extends StatelessWidget {
                       await uploadQuiz(content);
                       // ignore: use_build_context_synchronously
                       Navigator.of(context).push(CupertinoPageRoute(
-                        builder: (context) => QuestionPreview(quizContent:questions)));
+                          builder: (context) =>
+                              QuestionPreview(quizContent: questions)));
                     } else {
                       // ignore: use_build_context_synchronously
                       ScaffoldMessenger.of(context).showSnackBar(
                           const SnackBar(content: Text("Some Error Occurred")));
                     }
-                    
                   },
                   child: Column(
                     children: [
@@ -93,7 +94,38 @@ class WebsiteHomePage extends StatelessWidget {
               ],
             ),
             SizedBox(
-              height: size.height * 0.2,
+              height: size.height * 0.05,
+            ),
+            InkWell(
+              hoverColor: Colors.blue,
+              onTap: () {
+                Navigator.of(context).push(MaterialPageRoute(
+                    builder: (context) => SolutionUploadPage()));
+              },
+              child: SizedBox(
+                width: size.width * 0.25,
+                child: Column(
+                  children: [
+                    Card(
+                      color: Colors.blue.shade50,
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Column(
+                          children: [
+                            getText(
+                                s: "Upload Quiz Solution",
+                                size:
+                                    MediaQuery.of(context).size.height * 0.02),
+                          ],
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+            SizedBox(
+              height: size.height * 0.02,
             ),
             InkWell(
               hoverColor: Colors.blue,
@@ -120,7 +152,6 @@ class WebsiteHomePage extends StatelessWidget {
                 ),
               ),
             ),
-
           ],
         ),
       ),

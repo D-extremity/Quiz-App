@@ -7,4 +7,10 @@ class FetchTest {
       .collection("Test Series")
       .snapshots();
 }  
+
+ Stream<QuerySnapshot> solutions() {
+  return _firebaseFirestore
+      .collection("videosolution")
+      .snapshots();
+}  
 }

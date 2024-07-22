@@ -1,14 +1,17 @@
+// ignore: unnecessary_import
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:lottie/lottie.dart';
+import 'package:quiz_app/backend/phone_auth.dart';
 import 'package:quiz_app/bloc/bloc/auth_bloc_bloc.dart';
-import 'package:quiz_app/pages/homepage.dart';
-import 'package:quiz_app/pages/login_page.dart';
 import 'package:quiz_app/utils/font_style.dart';
 
 class NewUserDetailPage extends StatefulWidget {
-  const NewUserDetailPage({super.key});
+  final String name;
+  final String phoneNumber;
+  const NewUserDetailPage(
+      {super.key, required this.name, required this.phoneNumber});
 
   @override
   State<NewUserDetailPage> createState() => _NewUserDetailPageState();
@@ -185,18 +188,31 @@ class _NewUserDetailPageState extends State<NewUserDetailPage> {
                                           backgroundColor: Colors.black,
                                           minimumSize: Size(sizee.width * 0.8,
                                               sizee.height * 0.06)),
-                                      onPressed: () {
-                                        if (_year > 2010) {
+                                      onPressed: () async {
+                                        if (DateTime.now().year - _year < 12) {
                                           context
                                               .read<AuthBlocBloc>()
                                               .add(AuthBlocAgeBelow15Event());
-                                         
+                                        }
+                                        if (_highestQualification.isEmpty) {
+                                          ScaffoldMessenger.of(context)
+                                              .showSnackBar(const SnackBar(
+                                            content: Text(
+                                                "Qualification field is empty"),
+                                            backgroundColor: Colors.orange,
+                                            duration: Duration(seconds: 2),
+                                          ));
+                                          return;
                                         } else {
-                                          Navigator.of(context).pop();
-                                          Navigator.of(context).pushReplacement(
-                                              CupertinoPageRoute(
-                                                  builder: (context) =>
-                                                      const HomePage()));
+                                          await Authorization(context,
+                                                  name: widget.name,
+                                                  phoneNumber:
+                                                      widget.phoneNumber,
+                                                  bornYear: _year,
+                                                  gender: _gender,
+                                                  highestQualification:
+                                                      _highestQualification)
+                                              .signUpwithPhoneNumber();
                                         }
                                       },
                                       child: const Text(
@@ -207,65 +223,8 @@ class _NewUserDetailPageState extends State<NewUserDetailPage> {
                                 SizedBox(
                                   height: sizee.height * 0.015,
                                 ),
-                                Center(
-                                    child: getText(
-                                        s: "or", size: sizee.width * 0.05)),
-                                Padding(
-                                  padding: EdgeInsets.all(sizee.height * 0.015),
-                                  child: InkWell(
-                                    onTap: () {
-                                      Navigator.of(context)
-                                          .push(CupertinoPageRoute(
-                                        builder: (context) => const HomePage(),
-                                      ));
-                                    },
-                                    child: Center(
-                                        child: Container(
-                                      width: sizee.width * 0.7,
-                                      decoration: BoxDecoration(
-                                          border: Border.all(
-                                            width: 1,
-                                          ),
-                                          borderRadius: const BorderRadius.all(
-                                              Radius.circular(25))),
-                                      child: Row(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.spaceAround,
-                                        children: [
-                                          Image.asset(
-                                            "assets/g.png",
-                                            height: sizee.height * 0.065,
-                                            width: sizee.width * 0.065,
-                                          ),
-                                          getText(
-                                              s: "Sign up with Google",
-                                              size: sizee.height * 0.03)
-                                        ],
-                                      ),
-                                    )),
-                                  ),
-                                ),
-                                SizedBox(
-                                  height: sizee.height * 0.02,
-                                ),
-                                Center(
-                                  child: InkWell(
-                                    onTap: () {
-                                      ScaffoldMessenger.of(context)
-                                          .showSnackBar(const SnackBar(
-                                              content: Text("Line 244")));
+                              
                                 
-                                      Navigator.of(context).push(
-                                          MaterialPageRoute(
-                                              builder: (context) =>
-                                                  const LoginPage()));
-                                    },
-                                    child: getText(
-                                        s: "Create new account? Click Here",
-                                        size: sizee.width * 0.05,
-                                        color: Colors.blue),
-                                  ),
-                                ),
                               ],
                             ),
                           ),

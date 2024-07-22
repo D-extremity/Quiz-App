@@ -105,7 +105,7 @@ class _QuestionPreviewState extends State<QuestionPreview> {
                   ),
                   TextField(
                     decoration:
-                        InputDecoration(hintText: "Title of Test Series"),
+                        const InputDecoration(hintText: "Title of Test Series"),
                     controller: testSeriestitleController,
                   ),
                   InkWell(
