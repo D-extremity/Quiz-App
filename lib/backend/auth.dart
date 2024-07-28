@@ -8,7 +8,7 @@
 //!   final String password;
 //!   final int? bornYear;
 //!   final String? gender;
-//!   final String? highestQualification;
+//!   final String? courseOpted;
 
 //!   Authorization(
 //!       {required this.name,
@@ -16,7 +16,7 @@
 //!       required this.password,
 //!       required this.bornYear,
 //!       required this.gender,
-//!       required this.highestQualification});
+//!       required this.courseOpted});
 
 //!   final FirebaseAuth _auth = FirebaseAuth.instance;
 //!   Future<bool> createAccount() async {

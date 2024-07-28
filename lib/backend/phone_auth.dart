@@ -12,13 +12,13 @@ class Authorization {
   final String phoneNumber;
   final int? bornYear;
   final String? gender;
-  final String? highestQualification;
+  final String? courseOpted;
   Authorization(this.context,
       {required this.name,
       required this.phoneNumber,
       required this.bornYear,
       required this.gender,
-      required this.highestQualification});
+      required this.courseOpted});
   final FirebaseAuth _auth = FirebaseAuth.instance;
   Future<void> signUpwithPhoneNumber() async {
     final TextEditingController otp = TextEditingController();
@@ -43,7 +43,9 @@ class Authorization {
         },
         codeSent: ((String verificationId, int? resendToken) async {
           Navigator.of(context).pushReplacement(CupertinoPageRoute(
-              builder: (context) => OTPPage(otpController: otp,onPressed: () async {
+              builder: (context) => OTPPage(
+                  otpController: otp,
+                  onPressed: () async {
                     try {
                       // print(verificationId +
                       //     " " +
@@ -67,7 +69,7 @@ class Authorization {
                           name,
                           phoneNumber,
                           bornYear.toString(),
-                          highestQualification!,
+                          courseOpted!,
                           gender!,
                           useruid.user!.uid,
                           context);
@@ -79,9 +81,8 @@ class Authorization {
                         ),
                       );
                       Navigator.of(context).pop();
-                      Navigator.of(context).pushReplacement(MaterialPageRoute(
-                          builder: (context) => HomePage(
-                              )));
+                      Navigator.of(context).pushReplacement(
+                          MaterialPageRoute(builder: (context) => HomePage()));
                     } catch (e) {
                       ScaffoldMessenger.of(context).showSnackBar(
                         const SnackBar(
@@ -126,9 +127,10 @@ class Authorization {
 
 class OTPPage extends StatelessWidget {
   final VoidCallback onPressed;
-  final  TextEditingController otpController;
+  final TextEditingController otpController;
 
-  const OTPPage({super.key, required this.onPressed, required this.otpController});
+  const OTPPage(
+      {super.key, required this.onPressed, required this.otpController});
 
   @override
   Widget build(BuildContext context) {

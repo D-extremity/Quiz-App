@@ -5,25 +5,25 @@ class UserModel {
   final String name;
   final int bornYear;
   final String gender;
-  final String highestQualification;
+  final String courseOpted;
   const UserModel(
     this.name,
     this.bornYear,
     this.gender,
-    this.highestQualification,
+    this.courseOpted,
   );
 
   UserModel copyWith({
     String? name,
     int? bornYear,
     String? gender,
-    String? highestQualification,
+    String? courseOpted,
   }) {
     return UserModel(
       name ?? this.name,
       bornYear ?? this.bornYear,
       gender ?? this.gender,
-      highestQualification ?? this.highestQualification,
+      courseOpted ?? this.courseOpted,
     );
   }
 
@@ -32,7 +32,7 @@ class UserModel {
       'name': name,
       'bornYear': bornYear,
       'gender': gender,
-      'highestQualification': highestQualification,
+      'courseOpted': courseOpted,
     };
   }
 
@@ -41,7 +41,7 @@ class UserModel {
       map['name'] as String,
       map['bornYear'] as int,
       map['gender'] as String,
-      map['highestQualification'] as String,
+      map['courseOpted'] as String,
     );
   }
 
@@ -52,7 +52,7 @@ class UserModel {
 
   @override
   String toString() {
-    return 'UserModel(name: $name, bornYear: $bornYear, gender: $gender, highestQualification: $highestQualification)';
+    return 'UserModel(name: $name, bornYear: $bornYear, gender: $gender, courseOpted: $courseOpted)';
   }
 
   @override
@@ -62,7 +62,7 @@ class UserModel {
     return other.name == name &&
         other.bornYear == bornYear &&
         other.gender == gender &&
-        other.highestQualification == highestQualification;
+        other.courseOpted == courseOpted;
   }
 
   @override
@@ -70,6 +70,6 @@ class UserModel {
     return name.hashCode ^
         bornYear.hashCode ^
         gender.hashCode ^
-        highestQualification.hashCode;
+        courseOpted.hashCode;
   }
 }

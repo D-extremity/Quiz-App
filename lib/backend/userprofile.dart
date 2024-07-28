@@ -7,7 +7,7 @@ class UploadProfile {
       String userName,
       String phoneNumber,
       String bornYear,
-      String highestQualification,
+      String courseOpted,
       String gender,
       String creduid,
       BuildContext context) async {
@@ -16,7 +16,7 @@ class UploadProfile {
         'name': userName,
         'number': phoneNumber,
         'bornyear': bornYear,
-        'qualification': highestQualification,
+        'courseOpted': courseOpted,
         'gender': gender,
         'creduid': creduid
       });
@@ -45,9 +45,21 @@ class UploadProfile {
           .get() as Map<String, dynamic>;
       return userDetails;
     } catch (e) {
-      ScaffoldMessenger.of(context)
-          .showSnackBar(const SnackBar(content: const Text("User is not Registered")));
+      ScaffoldMessenger.of(context).showSnackBar(
+          const SnackBar(content: const Text("User is not Registered")));
       return {};
     }
+  }
+}
+
+Future<bool> updateCourse(String course, String phoneNumber) async {
+  FirebaseFirestore _firebaseFirestore = FirebaseFirestore.instance;
+  try {
+    await _firebaseFirestore.collection("Users").doc("+91$phoneNumber").update({
+      'courseOpted': course,
+    });
+    return true;
+  } catch (e) {
+    return false;
   }
 }

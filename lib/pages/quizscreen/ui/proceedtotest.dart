@@ -5,9 +5,11 @@ import 'package:quiz_app/pages/quizscreen/ui/quizscreen_page.dart';
 import 'package:quiz_app/utils/font_style.dart';
 
 class PreQuizScreen extends StatelessWidget {
+  final String userUid;
+  final String userName;
   final DocumentSnapshot doc;
   final List<Map<String, dynamic>> questions;
-  const PreQuizScreen({super.key, required this.questions, required this.doc});
+  const PreQuizScreen({super.key, required this.questions, required this.doc, required this.userUid, required this.userName});
 
   @override
   Widget build(BuildContext context) {
@@ -40,20 +42,23 @@ class PreQuizScreen extends StatelessWidget {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
-                    ElevatedButton(style: ElevatedButton.styleFrom(foregroundColor: Colors.red),
+                    ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.red),
                         onPressed: () {
                           Navigator.of(context).pop();
                         },
                         child: const Text("Cancel")),
                     ElevatedButton(
-                        style:
-                            ElevatedButton.styleFrom(foregroundColor: Colors.green),
+                        style: ElevatedButton.styleFrom(
+                            foregroundColor: Colors.green),
                         onPressed: () {
                           Navigator.of(context)
                               .pushReplacement(CupertinoPageRoute(
                                   builder: (context) => QuizscreenPage(
+                                        testName: doc['name'],
                                         questions: questions,
-                                        length: questions.length - 1,
+                                        length: questions.length - 1, userName: userName, userUid: userUid,
                                       )));
                         },
                         child: const Text("Start"))

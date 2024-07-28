@@ -4,12 +4,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:quiz_app/backend/fetchtest.dart';
 import 'package:quiz_app/pages/quizscreen/ui/proceedtotest.dart';
-import 'package:quiz_app/pages/signup_phone_no_auth.dart';
 import 'package:quiz_app/pages/solution_screen/video_solution.dart';
+import 'package:quiz_app/pages/user_setting_page.dart';
 import 'package:quiz_app/utils/font_style.dart';
 import 'package:quiz_app/widget/homepagewidget.dart';
+import 'package:quiz_app/widget/notes_widget.dart';
 import 'package:quiz_app/widget/profilepagewidget.dart';
 import 'package:quiz_app/widget/quizpage.dart';
+import 'package:shimmer/shimmer.dart';
 
 class HomePage extends StatefulWidget {
   const HomePage({super.key});
@@ -31,6 +33,13 @@ class HomePage extends StatefulWidget {
         backgroundColor: Color.fromARGB(255, 255, 255, 255)),
     BottomNavigationBarItem(
         icon: Icon(
+          Icons.menu_book,
+          color: Colors.grey,
+        ),
+        backgroundColor: Color.fromARGB(255, 248, 248, 248),
+        label: ""),
+    BottomNavigationBarItem(
+        icon: Icon(
           Icons.person,
           color: Colors.grey,
         ),
@@ -48,13 +57,12 @@ class _HomePageState extends State<HomePage> {
   @override
   void initState() {
     // print("UID OF USER : "+FirebaseAuth.instance.currentUser!.uid);
-    getDetails();
     super.initState();
+    getDetails();
   }
 
-  late final Map<String, dynamic> userDetails;
+  late Map<String, dynamic> userDetails;
   getDetails() async {
-    // print(FirebaseAuth.instance.currentUser!.phoneNumber);
     DocumentSnapshot snap = await FirebaseFirestore.instance
         .collection("Users")
         .doc(FirebaseAuth.instance.currentUser!.phoneNumber)
@@ -62,10 +70,27 @@ class _HomePageState extends State<HomePage> {
     setState(() {
       userDetails = (snap.data() as Map<String, dynamic>);
     });
+    screen = quizListScreenWidget(userDetails);
   }
 
   int currentIndex = 0;
-  Widget screen = quizListScreenWidget;
+  Widget screen = Shimmer.fromColors(
+      baseColor: Colors.white,
+      highlightColor: Colors.grey.shade100,
+      enabled: true,
+      child: SingleChildScrollView(
+          child: Column(
+        children: [
+          for (int i = 0; i < 4; i++)
+            const Card(
+              child: SizedBox(
+                height: 200,
+                width: 200,
+              ),
+            ),
+        ],
+      )));
+
   @override
   Widget build(BuildContext context) {
     return SafeArea(
@@ -93,13 +118,16 @@ class _HomePageState extends State<HomePage> {
           setState(() {
             currentIndex = value;
             if (currentIndex == 0) {
-              screen = quizListScreenWidget;
+              screen = quizListScreenWidget(userDetails);
             }
             if (currentIndex == 1) {
-              screen = solutionScreen;
+              screen = solutionScreen(userDetails);
             }
             if (currentIndex == 2) {
-              screen = userSetting(userDetails, size, context);
+              screen = notesPage(userDetails, size, context);
+            }
+            if (currentIndex == 3) {
+              screen = UserSettingPage(size: size, userDetails: userDetails);
             }
           });
         },
@@ -109,7 +137,8 @@ class _HomePageState extends State<HomePage> {
   }
 }
 
-Widget test(DocumentSnapshot document, Size size, BuildContext context) {
+Widget test(DocumentSnapshot document, Size size, BuildContext context,
+    String userName, String userUid) {
   Map<String, dynamic> doc = (document.data() as Map<String, dynamic>);
   final Widget img = doc['coverImg'] == ""
       ? Image.asset("assets/test.jpg")
@@ -122,6 +151,8 @@ Widget test(DocumentSnapshot document, Size size, BuildContext context) {
           builder: (context) => PreQuizScreen(
                 doc: document,
                 questions: questions,
+                userUid: userUid,
+                userName: userName,
               )));
     },
     child: Padding(
@@ -139,56 +170,85 @@ Widget test(DocumentSnapshot document, Size size, BuildContext context) {
   );
 }
 
-Widget quizListScreenWidget = StreamBuilder(
-  stream: FetchTest().tests(),
-  builder:
-      (BuildContext context, AsyncSnapshot<QuerySnapshot<Object?>> snapshot) {
-    if (snapshot.hasError) {
-      return const Center(
-          child: Text("Some Error Occurred , Please try after some time"));
-    } else if (snapshot.connectionState == ConnectionState.waiting) {
-      return const Center(
-        child: Text("Loading..."),
-      );
-    } else {
-      return ListView.builder(
-          itemCount: snapshot.data!.size,
-          itemBuilder: (context, int index) {
-            return snapshot.data!.docs
-                .map((document) =>
-                    test(document, MediaQuery.of(context).size, context))
-                .toList()[index];
-          });
-    }
-  },
-);
+Widget quizListScreenWidget(Map<String, dynamic> userDetails) => StreamBuilder(
+      stream: FetchTest(courseOpted: userDetails['courseOpted']).tests(),
+      builder: (BuildContext context,
+          AsyncSnapshot<QuerySnapshot<Object?>> snapshot) {
+        if (snapshot.hasError) {
+          return const Center(
+              child: Text("Some Error Occurred , Please try after some time"));
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Center(
+            child: Shimmer(
+              gradient: LinearGradient(colors: [Colors.white, Colors.grey]),
+              child: Center(
+                child: Text("Loading..."),
+              ),
+            ),
+          );
+        }
 
-Widget solutionScreen = StreamBuilder(
-  stream: FetchTest().solutions(),
-  builder:
-      (BuildContext context, AsyncSnapshot<QuerySnapshot<Object?>> snapshot) {
-    if (!snapshot.hasData) {
-      return getText(s: "No Solution is available currently", size: 30);
-    }
-    if (snapshot.hasError) {
-      return const Center(
-          child: Text("Some Error Occurred , Please try after some time"));
-    } else if (snapshot.connectionState == ConnectionState.waiting) {
-      return const Center(
-        child: Text("Loading..."),
-      );
-    } else {
-      return ListView.builder(
-          itemCount: snapshot.data!.size,
-          itemBuilder: (context, int index) {
-            return snapshot.data!.docs
-                .map((document) => solutionWidgets(
-                    document, MediaQuery.of(context).size, context))
-                .toList()[index];
-          });
-    }
-  },
-);
+        if (snapshot.data!.docs.isEmpty) {
+          return Center(
+              child: getText(
+                  s: "No Test Series is available currently",
+                  size: size.height * 0.012));
+        } else {
+          return ListView.builder(
+              itemCount: snapshot.data!.size,
+              itemBuilder: (context, int index) {
+                return snapshot.data!.docs
+                    .map((document) => test(
+                        document,
+                        MediaQuery.of(context).size,
+                        context,
+                        userDetails['name'],
+                        userDetails['creduid']))
+                    .toList()[index];
+              });
+        }
+      },
+    );
+
+Widget solutionScreen(Map<String, dynamic> userDetails) => StreamBuilder(
+      stream: FetchTest(courseOpted: userDetails['courseOpted']).solutions(),
+      builder: (BuildContext context,
+          AsyncSnapshot<QuerySnapshot<Object?>> snapshot) {
+        if (snapshot.hasError) {
+          return const Center(
+              child: Text("Some Error Occurred , Please try after some time"));
+        }
+        if (!snapshot.hasData) {
+          return Center(
+              child: getText(
+                  s: "No Solution is available currently",
+                  size: size.height * 0.012));
+        }
+
+        if (snapshot.data!.docs.isEmpty) {
+          return Center(
+              child: getText(
+                  s: "No Solution is available currently",
+                  size: size.height * 0.012));
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Shimmer(
+            gradient: LinearGradient(colors: [Colors.white, Colors.grey]),
+            child: Center(
+              child: Text("Loading..."),
+            ),
+          );
+        } else {
+          return ListView.builder(
+              itemCount: snapshot.data!.size,
+              itemBuilder: (context, int index) {
+                return snapshot.data!.docs
+                    .map((document) => solutionWidgets(
+                        document, MediaQuery.of(context).size, context))
+                    .toList()[index];
+              });
+        }
+      },
+    );
 
 Widget solutionWidgets(DocumentSnapshot doc, Size size, BuildContext context) {
   Map<String, dynamic> data = (doc.data() as Map<String, dynamic>);
@@ -218,28 +278,46 @@ Widget solutionWidgets(DocumentSnapshot doc, Size size, BuildContext context) {
   );
 }
 
-Widget userSetting(
+Widget notesPage(
         Map<String, dynamic> userDetails, Size size, BuildContext context) =>
-    Column(
-      children: [
-        Row(
-          mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-          children: [
-            getText(s: "Hi!", size: size.height * 0.02),
-            getText(
-                s: "${userDetails['name']}",
-                size: size.height * 0.02,
-                color: const Color.fromARGB(255, 50, 49, 49)),
-          ],
-        ),
-        ElevatedButton(
-            onPressed: () async {
-              await FirebaseAuth.instance.signOut();
-              Navigator.pushReplacement(
-                  context,
-                  CupertinoPageRoute(
-                      builder: (context) => const PhoneSignInPage()));
-            },
-            child: const Text("Signout"))
-      ],
+    StreamBuilder(
+      stream: FetchTest(courseOpted: userDetails['courseOpted']).notes(),
+      builder: (BuildContext context,
+          AsyncSnapshot<QuerySnapshot<Object?>> snapshot) {
+        if (snapshot.hasError) {
+          return const Center(
+              child: Text("Some Error Occurred , Please try after some time"));
+        }
+        if (!snapshot.hasData) {
+          return Center(
+              child: getText(
+                  s: "No Note is available currently",
+                  size: size.height * 0.012));
+        }
+
+        if (snapshot.data!.docs.isEmpty) {
+          return Center(
+              child: getText(
+                  s: "No Note is available currently",
+                  size: size.height * 0.012));
+        } else if (snapshot.connectionState == ConnectionState.waiting) {
+          return const Shimmer(
+            gradient: LinearGradient(colors: [Colors.white, Colors.grey]),
+            child: Center(
+              child: Text("Loading..."),
+            ),
+          );
+        } else {
+          return ListView.builder(
+              itemCount: snapshot.data!.size,
+              itemBuilder: (context, int index) {
+                return snapshot.data!.docs
+                    .map((document) => InkWell(
+                          child: notesWidgets(
+                              document, MediaQuery.of(context).size, context),
+                        ))
+                    .toList()[index];
+              });
+        }
+      },
     );

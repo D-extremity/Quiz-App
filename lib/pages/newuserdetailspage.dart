@@ -19,11 +19,24 @@ class NewUserDetailPage extends StatefulWidget {
 
 class _NewUserDetailPageState extends State<NewUserDetailPage> {
   String _gender = "Male";
-  String _highestQualification = "Graduation";
+  String _courseOpted = "State Exams";
   int _year = 2005;
+  Map<String, String> course = {
+    "Government Job Exams": 'govt',
+    "State Exams": 'state',
+    "AE & JE Exams": 'ae',
+    "Gate & ESE": 'gate',
+    "UG & PG Entrance Exam": 'ug',
+    "School(K-12)": 'school',
+    "Crack CA": 'crack',
+    "BFSI": 'bfsi',
+    "SKill Development": 'skill',
+    "Nursing": 'nurse'
+  };
 
   @override
   Widget build(BuildContext context) {
+    print(course.keys.toList());
     Size sizee = MediaQuery.of(context).size;
     final List<int> years =
         List<int>.generate(60, (int index) => 1990 + index, growable: true);
@@ -145,16 +158,11 @@ class _NewUserDetailPageState extends State<NewUserDetailPage> {
                                 ),
                                 DropdownButton(
                                   hint: getText(
-                                      s: "Highest Qualification",
+                                      s: "Preparing for ?",
                                       size: sizee.height * 0.02),
-                                  value: _highestQualification,
-                                  items: <String>[
-                                    "Graduation",
-                                    "Higher Secondary Education",
-                                    "Diploma",
-                                    "Engineering",
-                                    "Higher Primary Education"
-                                  ].map((String item) {
+                                  value: _courseOpted,
+                                  items:
+                                      course.keys.toList().map((String item) {
                                     return DropdownMenuItem(
                                       value: item,
                                       child: Text(item),
@@ -162,14 +170,13 @@ class _NewUserDetailPageState extends State<NewUserDetailPage> {
                                   }).toList(),
                                   onChanged: (String? value) {
                                     setState(() {
-                                      _highestQualification =
-                                          value ?? _highestQualification;
+                                      _courseOpted = value ?? _courseOpted;
                                     });
                                   },
                                 ),
                                 TextFormField(
-                                  controller: TextEditingController(
-                                      text: _highestQualification),
+                                  controller:
+                                      TextEditingController(text: _courseOpted),
                                   readOnly: true,
                                   decoration: const InputDecoration(
                                       border: OutlineInputBorder(
@@ -194,11 +201,11 @@ class _NewUserDetailPageState extends State<NewUserDetailPage> {
                                               .read<AuthBlocBloc>()
                                               .add(AuthBlocAgeBelow15Event());
                                         }
-                                        if (_highestQualification.isEmpty) {
+                                        if (_courseOpted.isEmpty) {
                                           ScaffoldMessenger.of(context)
                                               .showSnackBar(const SnackBar(
                                             content: Text(
-                                                "Qualification field is empty"),
+                                                "Preparaing for field is empty"),
                                             backgroundColor: Colors.orange,
                                             duration: Duration(seconds: 2),
                                           ));
@@ -210,8 +217,8 @@ class _NewUserDetailPageState extends State<NewUserDetailPage> {
                                                       widget.phoneNumber,
                                                   bornYear: _year,
                                                   gender: _gender,
-                                                  highestQualification:
-                                                      _highestQualification)
+                                                  courseOpted:
+                                                      course[_courseOpted])
                                               .signUpwithPhoneNumber();
                                         }
                                       },
@@ -223,8 +230,6 @@ class _NewUserDetailPageState extends State<NewUserDetailPage> {
                                 SizedBox(
                                   height: sizee.height * 0.015,
                                 ),
-                              
-                                
                               ],
                             ),
                           ),

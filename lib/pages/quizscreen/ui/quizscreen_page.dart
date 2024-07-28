@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:quiz_app/backend/upload_result.dart';
 import 'package:quiz_app/pages/quizscreen/bloc/quiz_bloc.dart';
 import 'package:quiz_app/pages/quizscreen/data/quizdata.dart';
 import 'package:quiz_app/pages/quizscreen/ui/resultpage.dart';
@@ -9,9 +10,17 @@ import 'package:slide_countdown/slide_countdown.dart';
 
 class QuizscreenPage extends StatefulWidget {
   final List<Map<String, dynamic>> questions;
+  final String testName;
+  final String userName;
+  final String userUid;
   final int length;
   const QuizscreenPage(
-      {super.key, required this.questions, required this.length});
+      {super.key,
+      required this.questions,
+      required this.length,
+      required this.testName,
+      required this.userName,
+      required this.userUid});
 
   static int i = 0;
   @override
@@ -23,6 +32,16 @@ class _QuizscreenPageState extends State<QuizscreenPage> {
   void dispose() {
     super.dispose();
     QuizscreenPage.i = 0;
+  }
+
+  Future<String> uploadScore(String marks) async {
+    String s = await uploadResult(
+        testSeriesName: widget.testName,
+        name: widget.userName,
+        userUid: widget.userUid,
+        marks: marks,
+        totalQuestions: widget.length.toString());
+    return s;
   }
 
   @override
@@ -65,9 +84,12 @@ class _QuizscreenPageState extends State<QuizscreenPage> {
       create: (context) => QuizBloc(),
       child: BlocConsumer<QuizBloc, QuizState>(
         listenWhen: (previous, current) => true,
-        listener: (context, state) {
+        listener: (context, state) async {
           if (state is QuizSubmittedState) {
             QuizscreenPage.i = 0;
+            String isuploaded = await uploadScore(result.toString());
+            ScaffoldMessenger.of(context)
+                .showSnackBar(SnackBar(content: Text(isuploaded)));
             Navigator.of(context).pushReplacement(CupertinoPageRoute(
                 builder: (context) => ResultPage(
                       totalQ: widget.length,
