@@ -1,10 +1,8 @@
 import "package:cloud_firestore/cloud_firestore.dart";
-import "package:firebase_auth/firebase_auth.dart";
 import "package:flutter/cupertino.dart";
 import "package:flutter/material.dart";
 import "package:quiz_app/backend/phone_auth_login.dart";
 import "package:quiz_app/pages/signup_phone_no_auth.dart";
-
 import "package:quiz_app/utils/font_style.dart";
 
 class PhoneSignUpPage extends StatefulWidget {

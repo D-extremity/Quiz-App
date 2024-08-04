@@ -1,10 +1,7 @@
 import 'package:firebase_app_check/firebase_app_check.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-// ignore: unnecessary_import
-import 'package:flutter/widgets.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:quiz_app/bloc/bloc/auth_bloc_bloc.dart';
 import 'package:quiz_app/pages/homepage.dart';
@@ -12,8 +9,6 @@ import 'package:quiz_app/pages/phone_login.dart';
 import 'package:quiz_app/pages/quizscreen/bloc/quiz_bloc.dart';
 import 'package:quiz_app/pages/signup_phone_no_auth.dart';
 import 'package:quiz_app/utils/globals.dart';
-import 'package:quiz_app/website/home_web.dart';
-
 import 'firebase_options.dart';
 
 void main() async {
@@ -47,9 +42,6 @@ class MyApp extends StatelessWidget {
           ),
         ],
         child:
-         (kIsWeb)
-            ? const WebsiteHomePage()
-            :
              StreamBuilder<User?>(
                 stream: FirebaseAuth.instance.authStateChanges(),
                 builder: (context, snapshot) {

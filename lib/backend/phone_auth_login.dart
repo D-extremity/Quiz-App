@@ -18,7 +18,7 @@ class LoginAuthorization {
   final FirebaseAuth _auth = FirebaseAuth.instance;
   Future<void> signInwithPhoneNumber() async {
     final TextEditingController otp = TextEditingController();
-    
+
     await _auth.verifyPhoneNumber(
         phoneNumber: "+91$phoneNumber",
         verificationCompleted: (PhoneAuthCredential credential) async {
@@ -29,38 +29,66 @@ class LoginAuthorization {
               .showSnackBar(SnackBar(content: Text(e.message!)));
         },
         codeSent: ((String verificationId, int? resendToken) async {
-          Navigator.of(context).pushReplacement(CupertinoPageRoute(
-              builder: (context) => OTPPage(onPressed: () async {
-                    try {
-                      PhoneAuthCredential credential =
-                          PhoneAuthProvider.credential(
-                              verificationId: verificationId,
-                              smsCode: otp.text.trim());
-                      UserCredential useruid =
-                          await _auth.signInWithCredential(credential);
+        // await  showOTPBox(context, () async {
+        //     try {
+        //       print(otp.text);
+        //       PhoneAuthCredential credential = PhoneAuthProvider.credential(
+        //           verificationId: verificationId, smsCode: otp.text.trim());
+        //       UserCredential useruid =
+        //           await _auth.signInWithCredential(credential);
 
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content: Text("Successfully Signed In"),
-                          backgroundColor: Colors.green,
-                        ),
-                      );
-                
+        //       ScaffoldMessenger.of(context).showSnackBar(
+        //         const SnackBar(
+        //           content: Text("Successfully Signed In"),
+        //           backgroundColor: Colors.green,
+        //         ),
+        //       );
+
+        //       Navigator.of(context).pushReplacement(
+        //           MaterialPageRoute(builder: (context) => const HomePage()));
+        //     } catch (e) {
+        //       ScaffoldMessenger.of(context).showSnackBar(
+        //         const SnackBar(
+        //           content: Text("Some error occurred: Check your OTP"),
+        //           backgroundColor: Colors.orange,
+        //         ),
+        //       );
+        //       log(e.toString());
+        //     }
+        //   }, otp);
+          Navigator.of(context).pushReplacement(CupertinoPageRoute(
+              builder: (context) => OTPPage(
+                    onPressed: () async {
+                      try {
+                        PhoneAuthCredential credential =
+                            PhoneAuthProvider.credential(
+                                verificationId: verificationId,
+                                smsCode: otp.text.trim());
+                        UserCredential useruid =
+                            await _auth.signInWithCredential(credential);
+
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content: Text("Successfully Signed In"),
+                            backgroundColor: Colors.green,
+                          ),
+                        );
+
                         Navigator.of(context).pushReplacement(MaterialPageRoute(
-                            builder: (context) => const HomePage(
-                                )));
-                      
-                    } catch (e) {
-                      ScaffoldMessenger.of(context).showSnackBar(
-                        const SnackBar(
-                          content:
-                              Text("Some error occurred: Check your OTP"),
-                          backgroundColor: Colors.orange,
-                        ),
-                      );
-                      log(e.toString());
-                    }
-                  }, otpController: otp,)));
+                            builder: (context) => const HomePage()));
+                      } catch (e) {
+                        ScaffoldMessenger.of(context).showSnackBar(
+                          const SnackBar(
+                            content:
+                                Text("Some error occurred: Check your OTP"),
+                            backgroundColor: Colors.orange,
+                          ),
+                        );
+                        log(e.toString());
+                      }
+                    },
+                    otpController: otp,
+                  )));
         }),
         codeAutoRetrievalTimeout: (String idk) {});
   }
@@ -134,3 +162,53 @@ class OTPPage extends StatelessWidget {
 OutlineInputBorder border = OutlineInputBorder(
     borderSide: const BorderSide(color: Colors.black),
     borderRadius: BorderRadius.circular(20));
+
+// Future<void> showOTPBox(BuildContext context, VoidCallback onPressed,
+//     TextEditingController _otpController) async{
+//   GlobalKey<FormState> _formKey1 = GlobalKey<FormState>();
+//   showDialog(
+//       context: context,
+//       builder: (context) => AlertDialog(
+//             title: Text("OTP Verification"),
+//             content: Column(
+//               crossAxisAlignment: CrossAxisAlignment.start,
+//               mainAxisSize: MainAxisSize.min,
+//               children: [
+//                 Text("Enter the 6 digit OTP"),
+//                 SizedBox(
+//                   height: 12,
+//                 ),
+//                 Form(
+//                   key: _formKey1,
+//                   child: TextFormField(
+//                     keyboardType: TextInputType.number,
+//                     controller: _otpController,
+//                     validator: (value) {
+//                       if (value!.length != 6) return "Invalid OTP";
+//                     },
+//                     decoration: InputDecoration(
+//                         labelText: "Enter the otp received",
+//                         border: OutlineInputBorder(
+//                             borderRadius: BorderRadius.circular(12))),
+//                   ),
+//                 ),
+//               ],
+//             ),
+//             actions: [
+//               TextButton(
+//                 onPressed: () => Navigator.of(context).pop(),
+//                 child:
+//                     const Text("Cancel", style: TextStyle(color: Colors.red)),
+//               ),
+//               TextButton(
+//                   onPressed: () async{
+//                     if (_formKey1.currentState!.validate()) {
+//                       print("Pressed");
+//                       await onPressed;
+//                       print("Worked");
+//                     }
+//                   },
+//                   child: Text("Submit"))
+//             ],
+//           ));
+// }
