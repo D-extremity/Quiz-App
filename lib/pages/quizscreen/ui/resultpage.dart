@@ -15,7 +15,6 @@ class _ResultPageState extends State<ResultPage> {
   @override
   void initState() {
     super.initState();
-
   }
 
   @override
@@ -31,7 +30,7 @@ class _ResultPageState extends State<ResultPage> {
     return Scaffold(
       appBar: AppBar(
         title: getText(
-            s: "Rahein Education",
+            s: "Quizzard",
             size: size.height * 0.018,
             color: Colors.blue.shade900,
             fw: FontWeight.w500),
@@ -50,9 +49,13 @@ class _ResultPageState extends State<ResultPage> {
                 s: "Your Score is ${widget.result}/${widget.totalQ}",
                 size: size.height * 0.02,
                 color: Colors.blue),
-            SizedBox(height: size.height*0.04,),
-            scoreCard(widget.result,widget.totalQ,message ,size, context),
-            SizedBox(height: size.height*0.04,),
+            SizedBox(
+              height: size.height * 0.04,
+            ),
+            scoreCard(widget.result, widget.totalQ, message, size, context),
+            SizedBox(
+              height: size.height * 0.04,
+            ),
             ElevatedButton(
                 onPressed: () => Navigator.of(context).pop(),
                 child: const Text("Return"))
@@ -62,10 +65,10 @@ class _ResultPageState extends State<ResultPage> {
     );
   }
 }
-Widget scoreCard(int result, int totalQuestion,String remark,
-     Size size, BuildContext context) {
-  final double percent =
-      (result / totalQuestion) * 100;
+
+Widget scoreCard(int result, int totalQuestion, String remark, Size size,
+    BuildContext context) {
+  final double percent = (result / totalQuestion) * 100;
   Color color = percent > 80
       ? Colors.green
       : percent > 60
@@ -77,15 +80,20 @@ Widget scoreCard(int result, int totalQuestion,String remark,
       color: Colors.grey.shade100,
       child: Padding(
         padding: const EdgeInsets.all(8.0),
-        child: ListTile(horizontalTitleGap: 2,
-          leading: CircleAvatar(radius: size.width*0.1,
+        child: ListTile(
+          horizontalTitleGap: 2,
+          leading: CircleAvatar(
+            radius: size.width * 0.1,
             backgroundColor: color,
-            child: Text("${percent.toString().substring(0,4)}%"),
+            child: Text("${percent.toString().substring(0, 4)}%"),
           ),
           title: getText(s: remark, size: size.height * 0.008),
           subtitle: getText(
               // ignore: prefer_interpolation_to_compose_strings
-              s:"Score : "+result.toString()+"/"+totalQuestion.toString(),
+              s: "Score : " +
+                  result.toString() +
+                  "/" +
+                  totalQuestion.toString(),
               size: size.height * 0.006),
         ),
       ),

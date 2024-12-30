@@ -36,85 +36,84 @@ class _VideoSolutionPageState extends State<VideoSolutionPage> {
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
 
-    return SafeArea(
-        child: Scaffold(
-      appBar: AppBar(
-        title: getText(
-            s: "Rahein Education",
-            size: size.height * 0.024,
-            color: Colors.blue.shade900,
-            fw: FontWeight.w500),
-        backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
-        leading: Image.asset("assets/logo.png"),
-      ),
-      backgroundColor: Colors.white,
-      body: BlocProvider(
-        create: (context) => VideoBloc(),
-        child: Column(
-          children: [
-            SizedBox(
-              height: size.height * 0.02,
-            ),
-            _controller.value.isInitialized
-                ? AspectRatio(
-                    aspectRatio: _controller.value.aspectRatio,
-                    child: VideoPlayer(_controller),
-                  )
-                : Container(),
-            VideoProgressIndicator(_controller, allowScrubbing: true),
-            _controller.value.isPlaying
-                ? GestureDetector(
-                    child: Icon(
-                      Icons.pause,
-                      size: size.width * 0.1,
-                    ),
-                    onTap: () {
-                      _controller.pause();
-                      setState(() {});
-                    })
-                : GestureDetector(
-                    child: Icon(
-                      Icons.play_arrow,
-                      size: size.width * 0.1,
-                    ),
-                    onTap: () {
-                      _controller.play();
-                      setState(() {});
-                    }),
-            SizedBox(
-              height: size.height * 0.1,
-            ),
-            getText(s: "Download PDF Solution", size: size.height * 0.014),
-            widget.solution['pdf'] == "404"
-                ? Text("Solution is not provided yet")
-                : GestureDetector(
-                    onTap: () async {
-                      await _launchUrl(
-                          Uri.parse("${widget.solution['pdf']}"), context);
-                    },
-                    child: SizedBox(
-                        width: size.width * 0.8,
-                        height: size.height * 0.06,
-                        child: Card(
-                          child: Padding(
-                            padding: const EdgeInsets.all(12.0),
-                            child: Row(children: [
-                              Icon(
-                                Icons.picture_as_pdf,
-                                color: Colors.red,
-                              ),
-                              getText(
-                                  s: "${widget.solution['name']}",
-                                  size: size.height * 0.02)
-                            ]),
-                          ),
-                        )),
-                  )
-          ],
+    return Scaffold(
+          appBar: AppBar(
+    title: getText(
+        s: "Quizzard",
+        size: size.height * 0.024,
+        color: Colors.blue.shade900,
+        fw: FontWeight.w500),
+    backgroundColor: Colors.white,
+    automaticallyImplyLeading: false,
+    leading: Image.asset("assets/logo.png"),
+          ),
+          backgroundColor: Colors.white,
+          body: BlocProvider(
+    create: (context) => VideoBloc(),
+    child: Column(
+      children: [
+        SizedBox(
+          height: size.height * 0.02,
         ),
-      ),
-    ));
+        _controller.value.isInitialized
+            ? AspectRatio(
+                aspectRatio: _controller.value.aspectRatio,
+                child: VideoPlayer(_controller),
+              )
+            : Container(),
+        VideoProgressIndicator(_controller, allowScrubbing: true),
+        _controller.value.isPlaying
+            ? GestureDetector(
+                child: Icon(
+                  Icons.pause,
+                  size: size.width * 0.1,
+                ),
+                onTap: () {
+                  _controller.pause();
+                  setState(() {});
+                })
+            : GestureDetector(
+                child: Icon(
+                  Icons.play_arrow,
+                  size: size.width * 0.1,
+                ),
+                onTap: () {
+                  _controller.play();
+                  setState(() {});
+                }),
+        SizedBox(
+          height: size.height * 0.1,
+        ),
+        getText(s: "Download PDF Solution", size: size.height * 0.014),
+        widget.solution['pdf'] == "404"
+            ? Text("Solution is not provided yet")
+            : GestureDetector(
+                onTap: () async {
+                  await _launchUrl(
+                      Uri.parse("${widget.solution['pdf']}"), context);
+                },
+                child: SizedBox(
+                    width: size.width * 0.8,
+                    height: size.height * 0.06,
+                    child: Card(
+                      child: Padding(
+                        padding: const EdgeInsets.all(12.0),
+                        child: Row(children: [
+                          Icon(
+                            Icons.picture_as_pdf,
+                            color: Colors.red,
+                          ),
+                          getText(
+                              s: "${widget.solution['name']}",
+                              size: size.height * 0.02)
+                        ]),
+                      ),
+                    )),
+              )
+      ],
+    ),
+          ),
+        );
   }
 }
 

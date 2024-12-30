@@ -14,22 +14,21 @@ class UploadedResultPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return SafeArea(
-        child: Scaffold(
-            appBar: AppBar(
-              bottom: PreferredSize(
-                  preferredSize: Size.fromHeight(20),
-                  child: Text("Your Previous Test Results")),
-              title: getText(
-                  s: "Rahein Education",
-                  size: size.height * 0.036,
-                  color: Colors.blue.shade900,
-                  fw: FontWeight.w500),
-              backgroundColor: Colors.white,
-              automaticallyImplyLeading: false,
-              leading: Image.asset("assets/logo.png"),
-            ),
-            body: resultPage(userDetails, size, context)));
+    return Scaffold(
+        appBar: AppBar(
+          bottom: PreferredSize(
+              preferredSize: Size.fromHeight(20),
+              child: Text("Your Previous Test Results")),
+          title: getText(
+              s: "Quizzard",
+              size: size.height * 0.036,
+              color: Colors.blue.shade900,
+              fw: FontWeight.w500),
+          backgroundColor: Colors.white,
+          automaticallyImplyLeading: false,
+          leading: Image.asset("assets/logo.png"),
+        ),
+        body: resultPage(userDetails, size, context));
   }
 }
 
@@ -50,14 +49,15 @@ Widget resultWidgets(
       child: Padding(
         padding: const EdgeInsets.all(8.0),
         child: ListTile(
-          leading: CircleAvatar(radius: size.width*0.1,
+          leading: CircleAvatar(
+            radius: size.width * 0.1,
             backgroundColor: color,
-            child: Text("${percent.toString().substring(0,4)}%"),
+            child: Text("${percent.toString().substring(0, 4)}%"),
           ),
           title: getText(s: doc['testSeriesName'], size: size.height * 0.028),
           subtitle: getText(
               // ignore: prefer_interpolation_to_compose_strings
-              s:"${"Score: "+ doc['marks']}/" +doc['totalQuestions'],
+              s: "${"Score: " + doc['marks']}/" + doc['totalQuestions'],
               size: size.height * 0.02),
         ),
       ),

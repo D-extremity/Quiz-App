@@ -93,11 +93,10 @@ class _HomePageState extends State<HomePage> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-        child: Scaffold(
+    return Scaffold(
       appBar: AppBar(
         title: getText(
-            s: "Rahein Education",
+            s: "Quizzard",
             size: size.height * 0.016,
             color: Colors.blue.shade900,
             fw: FontWeight.w500),
@@ -133,7 +132,7 @@ class _HomePageState extends State<HomePage> {
         },
       ),
       body: screen,
-    ));
+    );
   }
 }
 

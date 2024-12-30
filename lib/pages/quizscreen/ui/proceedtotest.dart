@@ -14,62 +14,61 @@ class PreQuizScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     Size size = MediaQuery.of(context).size;
-    return SafeArea(
-        child: Scaffold(
-      appBar: AppBar(
-        title: getText(
-            s: "Rahein Education",
-            size: size.height * 0.036,
-            color: Colors.blue.shade900,
-            fw: FontWeight.w500),
-        backgroundColor: Colors.white,
-        automaticallyImplyLeading: false,
-        leading: Image.asset("assets/logo.png"),
-      ),
-      body: Center(
-        child: Card(
-          child: Padding(
-            padding: const EdgeInsets.all(20),
-            child: Column(
-              children: [
-                testPreview(doc, size, context),
-                getText(
-                    s: "This test contains ${questions.length} Questions\nClick on start to proceed",
-                    size: size.width * 0.05),
-                SizedBox(
-                  height: size.height * 0.02,
-                ),
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.red),
-                        onPressed: () {
-                          Navigator.of(context).pop();
-                        },
-                        child: const Text("Cancel")),
-                    ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                            foregroundColor: Colors.green),
-                        onPressed: () {
-                          Navigator.of(context)
-                              .pushReplacement(CupertinoPageRoute(
-                                  builder: (context) => QuizscreenPage(
-                                        testName: doc['name'],
-                                        questions: questions,
-                                        length: questions.length - 1, userName: userName, userUid: userUid,
-                                      )));
-                        },
-                        child: const Text("Start"))
-                  ],
-                )
-              ],
-            ),
+    return Scaffold(
+          appBar: AppBar(
+    title: getText(
+        s: "Quizzard ",
+        size: size.height * 0.036,
+        color: Colors.blue.shade900,
+        fw: FontWeight.w500),
+    backgroundColor: Colors.white,
+    automaticallyImplyLeading: false,
+    leading: Image.asset("assets/logo.png"),
           ),
+          body: Center(
+    child: Card(
+      child: Padding(
+        padding: const EdgeInsets.all(20),
+        child: Column(
+          children: [
+            testPreview(doc, size, context),
+            getText(
+                s: "This test contains ${questions.length} Questions\nClick on start to proceed",
+                size: size.width * 0.05),
+            SizedBox(
+              height: size.height * 0.02,
+            ),
+            Row(
+              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+              children: [
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.red),
+                    onPressed: () {
+                      Navigator.of(context).pop();
+                    },
+                    child: const Text("Cancel")),
+                ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                        foregroundColor: Colors.green),
+                    onPressed: () {
+                      Navigator.of(context)
+                          .pushReplacement(CupertinoPageRoute(
+                              builder: (context) => QuizscreenPage(
+                                    testName: doc['name'],
+                                    questions: questions,
+                                    length: questions.length - 1, userName: userName, userUid: userUid,
+                                  )));
+                    },
+                    child: const Text("Start"))
+              ],
+            )
+          ],
         ),
       ),
-    ));
+    ),
+          ),
+        );
   }
 }
 
